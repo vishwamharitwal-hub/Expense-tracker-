@@ -1,0 +1,63 @@
+import csv
+from datetime import datetime
+filename='C:\\Users\\USER\\OneDrive\\Desktop\\data anylyst\\PythonA\\PERSONAL EXPENSE TRACKER\\expense.csv'
+
+def add_expense():
+    category=input("enter category (food ,travel etc )").strip()
+    amount=input("enter the amount ").strip()
+
+    if not amount.isdigit:
+        print("invalid amount ")
+        return
+
+    date=datetime.now().strftime("%y-%m-%d")
+
+    with open("C:\\Users\\USER\\OneDrive\\Desktop\\data anylyst\\PythonA\\PERSONAL EXPENSE TRACKER\\expense.csv","a",newline='') as file:
+        writer=csv.writer(file)
+        writer.writerow([date,category, amount])
+        print("expense added succesfully \n")
+
+def viewexpense():
+ print("\n all expenses :\n")
+ with open("C:\\Users\\USER\\OneDrive\\Desktop\\data anylyst\\PythonA\\PERSONAL EXPENSE TRACKER\\expense.csv","r") as file :
+      reader=csv.reader(file)
+      next(reader)
+      for row in reader:
+         print(f"date:{row[0]} |category:{row[1]} |amount:{row[2]}")
+
+def mounthly_sumary():
+       print("\n mounthly sumary\n")
+       sumary={}
+       with open("C:\\Users\\USER\\OneDrive\\Desktop\\data anylyst\\PythonA\\PERSONAL EXPENSE TRACKER\\expense.csv","r") as file:
+          reader=csv.reader(file)
+          next(reader)
+          for row in reader:
+             month= row[0][:7]
+             amount=int(row[2])
+             if month in sumary:
+                sumary[month]+=amount
+             else:
+                sumary[month]=amount
+             for month,total in sumary.items():
+                print(f"{month},{total}")
+def main():
+    while True:
+         print("\n===Expense tracker menue===")
+         print("1.Add expense")
+         print("2.View expense")
+         print("3.Monthly sumary ")
+         print("4.Exit")
+
+         choice=input("Enter your choice(1,4)").strip()
+         if choice== '1':
+            add_expense()
+         elif choice=='2':
+            viewexpense()
+         elif  choice=='3':
+            mounthly_sumary()
+         elif  choice=='4':
+            print("Exiting byee ...")
+         else :
+          print("invalid choice.try again.")
+
+main()
